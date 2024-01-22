@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:19:06 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 11:08:44 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/18 13:50:31 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ void	string_expansion_loop(const char *str, t_envlst *envlst,
 	while (str[++i])
 	{
 		flag = set_flag(str[i], flag);
-		while (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '_')
+		while (str[i] == '$' && ft_isdigit(str[i + 1]) && flag != 1)
+			i += 2;
+		while (str[i] == '$' && (ft_isalpha(str[i + 1]) || str[i + 1] == '_')
 			&& flag != 1)
 		{
 			j += replace_by_env(to_return, &str[i + 1], j, envlst);

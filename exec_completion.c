@@ -6,12 +6,15 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:29:14 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/17 14:06:21 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 09:20:12 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libftprintf/libft/libft.h"
 #include "minishell.h"
+#include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int	job_complete(t_processlst *processlst)
 {
@@ -35,6 +38,10 @@ void	mark_status(int pid, int status, t_processlst *processlst)
 	if (!processlst)
 		return ;
 	processlst->status = WEXITSTATUS(status);
+	if (WTERMSIG(status) == SIGQUIT)
+		processlst->status = 131;
+	if (WTERMSIG(status) == SIGINT)
+		processlst->status = 130;
 	processlst->complete = 1;
 }
 

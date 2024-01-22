@@ -6,13 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:12:06 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 12:41:02 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/19 09:15:10 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf/libft/libft.h"
 #include "minishell.h"
-#include <stdio.h>
 
 char	*find_cmd(t_wordlst *wordlst, t_shell *shell)
 {
@@ -52,9 +50,16 @@ int	input_args(t_wordlst *wordlst, t_processlst *process,
 	{
 		process->argv[*i] = ft_strdup(wordlst->word);
 		if (!process->argv[*i])
-			return (perror("retrieve path"), -1);
+			return (perror("retrieve arg"), -1);
 		(*i)++;
 	}
+	return (0);
+}
+
+int	empty_process(t_processlst *process)
+{
+	process->argv = NULL;
+	process->builtin_index = 7;
 	return (0);
 }
 
@@ -63,6 +68,8 @@ int	get_args(t_wordlst *wordlst, t_processlst *process, t_shell *shell)
 	int	i;
 
 	i = 1;
+	if (args_size(wordlst) == 0)
+		return (empty_process(process));
 	process->argv = ft_calloc(args_size(wordlst) + 1, sizeof(char *));
 	while (wordlst && wordlst->type != PIPE)
 	{

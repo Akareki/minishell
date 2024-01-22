@@ -6,12 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 14:39:25 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/15 16:14:10 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/19 09:17:04 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 
 void	add_to_process_lst(t_processlst **processlst, t_processlst *new_process)
 {
@@ -48,7 +47,7 @@ int	build_process_lst(t_wordlst *wordlst, t_processlst **process_lst,
 		if (get_args(wordlst, new_process, shell) == -1)
 			return (free(new_process), -1);
 		if (get_redir_files(wordlst, new_process) == -1)
-			return (free(new_process), -1);
+			return (add_to_process_lst(process_lst, new_process), -1);
 		add_to_process_lst(process_lst, new_process);
 		while (wordlst && wordlst->type != PIPE)
 			wordlst = wordlst->next;

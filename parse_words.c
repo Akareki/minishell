@@ -6,12 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 13:15:29 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/15 10:02:55 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:03:44 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 char	*get_word(char **line)
 {

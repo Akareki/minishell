@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:11:35 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 12:23:43 by wlalaoui         ###   ########.fr       */
+/*   Updated: 2024/01/19 11:01:15 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ int	change_directory(char **args, t_envlst **envlst)
 	return (0);
 }
 
-int	bi_cd(char **args, int fd_in, int fd_out, t_envlst **envlst)
+int	bi_cd(char **args, int is_piped, t_envlst **envlst)
 {
 	char	*oldpwd;
 	char	*curr_directory;
 
 	if (check_error_cd(args) == 1)
 		return (1);
-	if (fd_in == 0 && fd_out == 1)
+	if (!is_piped)
 	{
 		if (update_old_pwd(envlst, &curr_directory, &oldpwd) == 1)
 			return (1);

@@ -6,15 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 14:03:34 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 11:24:28 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 09:23:20 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf/libft/libft.h"
 #include "minishell.h"
-#include <readline/readline.h>
-#include <signal.h>
-#include <unistd.h>
 
 int	main_signal_handlers(void)
 {
@@ -50,15 +46,17 @@ void	fork_signal_handler(void)
 	signal(SIGPIPE, SIG_DFL);
 }
 
-void	exec_signal_handler(void)
+int	exec_signal_handler(void)
 {
 	struct sigaction	action;
 
 	ft_bzero(&action, sizeof(action));
 	action.sa_handler = exec_sig_int_handler;
 	action.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &action, NULL);
-	sigaction(SIGQUIT, &action, NULL);
+	if (sigaction(SIGINT, &action, NULL))
+		return (-1);
 	signal(SIGPIPE, SIG_IGN);
 	signal(SIGTERM, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	return (0);
 }

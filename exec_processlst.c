@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:33:29 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 11:50:40 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:02:58 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,17 @@ int	exec_fork(t_processlst *processlst, char **envarray)
 	{
 		manage_fds(processlst);
 		fork_signal_handler();
+		if (!ft_strchr(processlst->argv[0], '/'))
+		{
+			ft_putstr_fd(processlst->argv[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			exit(127);
+		}
 		execve(processlst->argv[0], processlst->argv, envarray);
 		perror(processlst->argv[0]);
+		if (access(processlst->argv[0], F_OK) || errno == EACCES
+			|| errno == E2BIG || errno == ENAMETOOLONG)
+			exit(126);
 		exit(127);
 	}
 	if (processlst->pid == -1)

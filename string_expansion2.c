@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:19:51 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 11:08:54 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/18 14:33:06 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ size_t	len_of_variables(const char *str)
 			flag = 2;
 		else if (str[i] == '"' && flag == 2)
 			flag = 0;
-		if (str[i] == '$' && (ft_isalnum(str[i + 1])
+		if (str[i] == '$' && (ft_isalpha(str[i + 1])
 				|| str[i + 1] == '_') && flag != 1)
 		{
 			count += len_for_variable(str, i + 1) + 1;
@@ -86,7 +86,10 @@ size_t	len_of_variables_values(const char *s, t_envlst *envlst)
 	while (s[++i])
 	{
 		f = set_flag(s[i], f);
-		if (s[i] == '$' && (ft_isalnum(s[i + 1]) || s[i + 1] == '_') && f != 1)
+		if (s[i] == '$' && ft_isdigit(s[i + 1]) && f != 1)
+			i += 2;
+		else if (s[i] == '$' && (ft_isalpha(s[i + 1])
+				|| s[i + 1] == '_') && f != 1)
 		{
 			variable = grab_variable(&s[i + 1]);
 			variable_value = env_get_value(envlst, variable);

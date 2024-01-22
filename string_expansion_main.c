@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:06:10 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 11:46:08 by wlalaoui         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:34:51 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,32 @@ size_t	number_of_interr(const char *str)
 	return (count);
 }
 
-void	expand_interr_loop(const char *s, char *to_return,
+void	expand_interr_loop(const char *str, char *to_return,
 		char *last_status_str, size_t i)
 {
 	size_t	j;
 	size_t	k;
-	int		f;
+	int		flag;
 
 	j = 0;
 	k = 0;
-	f = 0;
-	while (s[++i])
+	flag = 0;
+	while (str[++i])
 	{
-		f = set_flag(s[i], f);
-		while (s[i] && s[i + 1] && s[i] == '$' && s[i + 1] == '?' && f != 1)
+		flag = set_flag(str[i], flag);
+		while (str[i] && str[i + 1] && str[i] == '$'
+			&& str[i + 1] == '?' && flag != 1)
 		{
 			i += 2;
 			while (last_status_str[k])
+			{
 				to_return[j++] = last_status_str[k++];
+			}
 			k = 0;
 		}
-		if (!s[i])
+		if (!str[i])
 			break ;
-		to_return[j] = s[i];
-		j++;
+		to_return[j++] = str[i];
 	}
 	to_return[j] = '\0';
 }

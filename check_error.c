@@ -6,12 +6,11 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 13:17:56 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/15 10:08:15 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 08:44:50 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
 
 bool	check_letter_after(const char *command_line, ssize_t i, bool is_pipe)
 {
@@ -20,6 +19,8 @@ bool	check_letter_after(const char *command_line, ssize_t i, bool is_pipe)
 	{
 		while (is_blank(command_line[i]))
 			i++;
+		if (!command_line[i])
+			return (1);
 		if (is_pipe)
 		{
 			if (command_line[i] == '|')
@@ -93,17 +94,26 @@ bool	check_quotes(const char *command_line)
 bool	check_error(const char *command_line)
 {
 	ssize_t	i;
+	char	quote;
 
 	i = 0;
+	quote = 0;
 	if (check_only_blanks(command_line))
 		return (1);
+	if (check_quotes(command_line))
+		return (write(2, "minishell : syntax error\n", 25) - 24);
 	while (command_line[i])
 	{
-		if (invalid_operator(command_line[i], command_line, i))
+		if (!quote && (command_line[i] == '\'' || command_line[i] == '"'))
+		{
+			quote = command_line[i];
+			i++;
+		}
+		if (quote && command_line[i] == quote)
+			quote = 0;
+		if (!quote && invalid_operator(command_line[i], command_line, i))
 			return (write(2, "minishell : syntax error\n", 25) - 24);
 		i++;
 	}
-	if (check_quotes(command_line))
-		return (write(2, "minishell : syntax error\n", 25) - 24);
 	return (0);
 }

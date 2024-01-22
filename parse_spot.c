@@ -6,14 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:01:51 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/15 12:12:13 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:03:37 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf/libft/libft.h"
 #include "minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
 void	spot_operators(t_wordlst *wordlst)
 {

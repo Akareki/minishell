@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 13:10:09 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/17 09:56:42 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/19 10:58:58 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ int	connect_pipe(t_processlst *process_lst, t_processlst *new_process)
 	else
 		close(pipe_fd[1]);
 	new_process->fd_in = pipe_fd[0];
+	process_lst->is_piped = 1;
+	new_process->is_piped = 1;
 	return (0);
 }

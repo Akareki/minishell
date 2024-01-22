@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 16:07:03 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 12:24:14 by wlalaoui         ###   ########.fr       */
+/*   Updated: 2024/01/22 09:35:55 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,14 @@ void	unset_loop(t_envlst **envlst, t_envlst *curr, char **args, size_t i)
 	}
 }
 
-//not tested
-int	bi_unset(char **args, t_envlst **envlst, int fd_in, int fd_out)
+int	bi_unset(char **args, t_envlst **envlst, int is_piped)
 {
 	t_envlst	*curr;
 	size_t		i;
 
 	i = 1;
 	curr = NULL;
-	if (fd_in == 0 && fd_out == 1)
+	if (!is_piped)
 	{
 		if (!envlst || !*envlst)
 			return (0);

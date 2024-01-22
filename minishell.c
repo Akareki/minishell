@@ -6,11 +6,13 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:36:36 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 12:05:52 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 09:46:01 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libftprintf/libft/libft.h"
+#include <signal.h>
 
 int	g_last_sig;
 
@@ -53,47 +55,22 @@ int	init_shell(t_shell *shell, char **env)
 	return (0);
 }
 
-void	print_processlst(t_processlst *processlst)
-{
-	int	i;
-
-	while (processlst)
-	{
-		i = 0;
-		while (processlst->argv[i])
-		{
-			printf("%s ", processlst->argv[i]);
-			i++;
-		}
-		printf("\n");
-		printf("fd_in : %d\n", processlst->fd_in);
-		printf("fd_out : %d\n", processlst->fd_out);
-		printf("builtin_index : %d\n", processlst->builtin_index);
-		processlst = processlst->next;
-	}
-}
-
 int	minishell_loop(t_shell *shell)
 {
 	while (1)
 	{
 		if (clean_shell(shell) == -1)
-			bi_exit(shell, NULL, 0, 1);
+			bi_exit(shell, NULL, 0);
 		shell->line = readline(shell->prompt);
 		if (!shell->line)
-			bi_exit(shell, NULL, 0, 1);
-		add_history(shell->line);
+			bi_exit(shell, NULL, 0);
+		ft_add_history(shell->line);
 		if (check_error(shell->line)
 			|| parse_words(shell->line, &shell->wordlst)
 			|| expand_words(shell->wordlst, shell->envlst, shell->last_status)
 			|| parse_cmd(shell))
 		{
 			shell->last_status = 2;
-			if (g_last_sig == SIGINT)
-			{
-				g_last_sig = 0;
-				shell->last_status = 130;
-			}
 			continue ;
 		}
 		exec_signal_handler();

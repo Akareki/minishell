@@ -6,14 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:05:18 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 12:03:54 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 09:30:41 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf/libft/libft.h"
 #include "minishell.h"
-#include <signal.h>
-#include <unistd.h>
 
 int	open_redir_files(t_wordlst *wordlst, t_processlst *process)
 {
@@ -70,7 +67,7 @@ char	*tmp_heredoc_name(void)
 	return (name);
 }
 
-int	write_heredoc(int fd, char *delimiter)
+int	write_heredoc(t_processlst *process, char *delimiter)
 {
 	char	*line;
 
@@ -80,11 +77,15 @@ int	write_heredoc(int fd, char *delimiter)
 	while (!line || ft_strcmp(line, delimiter))
 	{
 		if (line)
-			ft_putendl_fd(line, fd);
+			ft_putendl_fd(line, process->fd_in);
 		free(line);
 		line = readline(">");
 		if (g_last_sig == SIGINT)
-			return (close(fd), -1);
+		{
+			g_last_sig = 0;
+			process->status = 130;
+			return (free(line), close(process->fd_in), -1);
+		}
 		if (!line)
 		{
 			ft_putendl_fd("Warning : Heredoc ended by EOF", 2);
@@ -109,7 +110,7 @@ int	open_heredoc(t_wordlst *wordlst, t_processlst *process)
 	process->fd_in = open(heredoc_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (process->fd_in == -1)
 		return (-1);
-	if (write_heredoc(process->fd_in, wordlst->next->word) == -1)
+	if (write_heredoc(process, wordlst->next->word) == -1)
 		return (-1);
 	close(process->fd_in);
 	process->fd_in = open(heredoc_name, O_RDONLY, 0644);

@@ -6,13 +6,13 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 09:13:19 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 12:14:19 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 09:44:13 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libftprintf/libft/libft.h"
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
 
 void	clean_wordlst(t_wordlst **wordlst)
 {
@@ -43,7 +43,9 @@ int	clean_processlst(t_processlst **processlst, t_shell *shell)
 	{
 		i = 0;
 		status = process->status;
-		while (process->argv[i])
+		if (g_last_sig == SIGINT && status == 130)
+			ft_putendl_fd("", g_last_sig = 0);
+		while (process->argv && process->argv[i])
 			free(process->argv[i++]);
 		free(process->argv);
 		if (process->fd_in != 0 && process->fd_in != -1)
@@ -54,7 +56,6 @@ int	clean_processlst(t_processlst **processlst, t_shell *shell)
 		free(process);
 		process = next_process;
 	}
-	*processlst = NULL;
 	return (status);
 }
 
@@ -65,12 +66,9 @@ int	clean_shell(t_shell *shell)
 
 	clean_wordlst(&shell->wordlst);
 	shell->last_status = clean_processlst(&shell->processlst, shell);
-	if (g_last_sig == SIGINT || g_last_sig == SIGQUIT)
-	{
-		shell->last_status = 130 * (g_last_sig == SIGINT)
-			+ 131 * (g_last_sig == SIGQUIT);
-		g_last_sig = 0;
-	}
+	shell->processlst = NULL;
+	if (shell->last_status == 131)
+		ft_putstr_fd("Quit (core dumped)\n", 2);
 	free_envarray(shell->envarray);
 	shell->envarray = NULL;
 	free(shell->line);
@@ -96,18 +94,4 @@ void	free_envarray(char **envarray)
 	while (envarray[i])
 		free(envarray[i++]);
 	free(envarray);
-}
-
-void	exit_failed_fork(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-	exit(1);
 }

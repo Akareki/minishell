@@ -1,38 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handlers2.c                                 :+:      :+:    :+:   */
+/*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 11:24:37 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 09:27:22 by aoizel           ###   ########.fr       */
+/*   Created: 2024/01/18 13:40:46 by aoizel            #+#    #+#             */
+/*   Updated: 2024/01/18 15:04:01 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	void_event(void)
+void	ft_add_history(char *line)
 {
-	return (0);
-}
-
-void	main_sig_int_handler(int sig)
-{
-	(void)sig;
-	write(0, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	exec_sig_int_handler(int sig)
-{
-	g_last_sig = sig;
-}
-
-void	heredoc_sig_int_handler(int sig)
-{
-	g_last_sig = sig;
-	rl_done = 1;
+	if (line && line[0])
+		add_history(line);
 }

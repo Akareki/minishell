@@ -6,12 +6,11 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:46:20 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 11:56:06 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/18 15:01:29 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
 
 void	bi_echo(const char **args, int fd_out)
 {

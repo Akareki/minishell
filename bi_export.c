@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:16:18 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/17 14:03:29 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 08:57:08 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	sort_ascii(char **list)
 	{
 		if (list[i + 1])
 		{
-			if (strcmp(list[i], list[i + 1]) > 0)
+			if (ft_strcmp(list[i], list[i + 1]) > 0)
 			{
 				temp = list[i];
 				list[i] = list[i + 1];
@@ -59,8 +59,13 @@ int	check_error_export(char *arg1)
 	size_t	i;
 
 	i = 0;
-	if (ft_isdigit(arg1[0]))
+	if (ft_isdigit(arg1[0]) || arg1[0] == '=')
+	{
+		ft_putstr_fd("export: ", 2);
+		ft_putstr_fd(arg1, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
 		return (1);
+	}
 	while (arg1[i] && arg1[i] != '=')
 	{
 		if (!ft_isalnum(arg1[i]) && arg1[i] != '_' && arg1[i] != '=')
@@ -75,7 +80,7 @@ int	check_error_export(char *arg1)
 	return (0);
 }
 
-int	bi_export(char **args, t_envlst **envlst, int fd_in, int fd_out)
+int	bi_export(char **args, t_envlst **envlst, int is_piped, int fd_out)
 {
 	size_t	i;
 	bool	has_failed;
@@ -86,7 +91,7 @@ int	bi_export(char **args, t_envlst **envlst, int fd_in, int fd_out)
 		return (display_sorted_env(*envlst, fd_out), 0);
 	if (check_error_export(args[1]))
 		return (1);
-	if (fd_in == 0 && fd_out == 1)
+	if (!is_piped)
 	{
 		while (args[i])
 		{

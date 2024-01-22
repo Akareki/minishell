@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 09:51:40 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 11:56:55 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 09:36:31 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 # include <stdbool.h>
 # include <errno.h>
 # include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <readline/readline.h>
@@ -62,9 +59,8 @@ typedef struct s_processlst
 	char				**argv;
 	int					fd_in;
 	int					fd_out;
-	int					pipe_in;
-	int					pipe_out;
 	struct s_processlst	*next;
+	int					is_piped;
 	int					complete;
 	int					status;
 	int					builtin_index;
@@ -92,6 +88,8 @@ void		env_destroy(t_envlst *envlst);
 t_envlst	*env_lst_copy(char **env);
 size_t		env_lst_len(t_envlst *env_list);
 char		**env_array_convert(t_envlst *env_list);
+
+void		ft_add_history(char *line);
 
 int			is_blank(char c);
 int			is_metacharacter(char c);
@@ -125,7 +123,6 @@ char		*expand_variables(const char *str, t_envlst *envlst);
 int			connect_pipe(t_processlst *process_lst, t_processlst *new_process);
 
 int			exec_processlst(t_shell *shell);
-void		exit_failed_fork(char **argv);
 
 void		clean_wordlst(t_wordlst **wordlst);
 int			clean_processlst(t_processlst **processlst, t_shell *shell);
@@ -135,7 +132,7 @@ int			minishell_loop(t_shell *shell);
 int			main_signal_handlers(void);
 int			heredoc_signal_handler(void);
 void		fork_signal_handler(void);
-void		exec_signal_handler(void);
+int			exec_signal_handler(void);
 void		main_sig_int_handler(int sig);
 void		exec_sig_int_handler(int sig);
 void		heredoc_sig_int_handler(int sig);
@@ -144,10 +141,10 @@ void		wait_job_completion(t_processlst *processlst);
 
 int			exec_builtin(t_processlst *processlst, t_shell *shell);
 void		bi_echo(const char **args, int fd_out);
-int			bi_cd(char **argv, int fd_in, int fd_out, t_envlst **envlst);
+int			bi_cd(char **argv, int is_piped, t_envlst **envlst);
 int			bi_env(t_envlst *envlst, char **args, int fd_out);
-int			bi_exit(t_shell *shell_to_free, char **args, int fd_in, int fd_out);
-int			bi_export(char **args, t_envlst **envlst, int fd_in, int fd_out);
-int			bi_pwd(char **args, int fd_out);
-int			bi_unset(char **args, t_envlst **envlst, int fd_in, int fd_out);
+int			bi_exit(t_shell *shell_to_free, char **args, int is_piped);
+int			bi_export(char **args, t_envlst **envlst, int is_piped, int fd_out);
+int			bi_pwd(int fd_out);
+int			bi_unset(char **args, t_envlst **envlst, int is_piped);
 #endif
