@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 09:51:40 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 09:36:31 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 10:07:38 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_envlst
 {
 	char			*key;
 	char			*value;
+	int				only_export;
 	struct s_envlst	*next;
 }	t_envlst;
 
