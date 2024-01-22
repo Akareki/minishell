@@ -6,7 +6,7 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:19:06 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 13:50:31 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 15:05:08 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ size_t	replace_by_env(char *to_return, const char *str,
 	k = 0;
 	while (env_value[k])
 	{
-		to_return[j] = env_value[k];
+		if (env_value[k] == '"' || env_value[k] == '\'')
+			to_return[j] = env_value[k] - 10;
+		else
+			to_return[j] = env_value[k];
 		j++;
 		k++;
 	}
@@ -56,34 +59,6 @@ size_t	len_without_quotes(const char *str)
 		i++;
 	}
 	return (count);
-}
-
-char	*remove_quotes(const char *str)
-{
-	char	*to_return;
-	ssize_t	i;
-	ssize_t	j;
-	bool	single_quote_flag;
-	bool	double_quote_flag;
-
-	i = -1;
-	j = -1;
-	single_quote_flag = 0;
-	double_quote_flag = 0;
-	to_return = malloc(sizeof(char) * (len_without_quotes(str) + 1));
-	if (!to_return)
-		return (NULL);
-	while (str[++i])
-	{
-		if (str[i] == '\'' && double_quote_flag == 0)
-			single_quote_flag = !single_quote_flag;
-		else if (str[i] == '"' && single_quote_flag == 0)
-			double_quote_flag = !double_quote_flag;
-		else
-			to_return[++j] = str[i];
-	}
-	to_return[j + 1] = '\0';
-	return (to_return);
 }
 
 void	string_expansion_loop(const char *str, t_envlst *envlst,
@@ -116,7 +91,6 @@ void	string_expansion_loop(const char *str, t_envlst *envlst,
 char	*expand_variables(const char *str, t_envlst *envlst)
 {
 	char	*to_return;
-	char	*to_return_without_quote;
 	int		flag;
 
 	to_return = malloc(sizeof(char) * (ft_strlen(str)
@@ -126,7 +100,5 @@ char	*expand_variables(const char *str, t_envlst *envlst)
 		return (NULL);
 	flag = 0;
 	string_expansion_loop(str, envlst, to_return, flag);
-	to_return_without_quote = remove_quotes(to_return);
-	free(to_return);
-	return (to_return_without_quote);
+	return (to_return);
 }

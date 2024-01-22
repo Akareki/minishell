@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 08:36:36 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 09:46:01 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 15:40:54 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ int	init_shell(t_shell *shell, char **env)
 	return (0);
 }
 
+void	print_wordlist(t_wordlst *wordlst)
+{
+	while (wordlst)
+	{
+		ft_putendl_fd(wordlst->word, 1);
+		wordlst = wordlst->next;
+	}
+}
+
 int	minishell_loop(t_shell *shell)
 {
 	while (1)
@@ -65,9 +74,10 @@ int	minishell_loop(t_shell *shell)
 		if (!shell->line)
 			bi_exit(shell, NULL, 0);
 		ft_add_history(shell->line);
-		if (check_error(shell->line)
+		if (expand_line(shell)
+			|| check_error(shell->line)
 			|| parse_words(shell->line, &shell->wordlst)
-			|| expand_words(shell->wordlst, shell->envlst, shell->last_status)
+			|| quote_removal(shell->wordlst)
 			|| parse_cmd(shell))
 		{
 			shell->last_status = 2;

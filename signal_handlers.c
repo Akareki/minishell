@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 14:03:34 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 09:23:20 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 11:05:49 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	fork_signal_handler(void)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGPIPE, SIG_DFL);
+	signal(SIGTERM, SIG_DFL);
 }
 
 int	exec_signal_handler(void)

@@ -6,11 +6,12 @@
 /*   By: wlalaoui <wlalaoui@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 14:06:10 by wlalaoui          #+#    #+#             */
-/*   Updated: 2024/01/18 14:34:51 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 16:08:19 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 size_t	number_of_interr(const char *str)
 {
@@ -82,4 +83,17 @@ char	*string_expansion(const char *str, t_envlst *envlst, int last_status)
 	free(to_return);
 	free(last_status_str);
 	return (to_return_w_variables);
+}
+
+int	expand_line(t_shell *shell)
+{
+	char	*old_line;
+
+	old_line = shell->line;
+	shell->line = string_expansion(shell->line, shell->envlst,
+			shell->last_status);
+	free(old_line);
+	if (!shell->line)
+		return (-1);
+	return (0);
 }

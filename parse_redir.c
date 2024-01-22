@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:05:18 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 09:30:41 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 12:25:08 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	open_redir_files(t_wordlst *wordlst, t_processlst *process)
 			close(process->fd_in);
 		process->fd_in = open(wordlst->next->word, O_RDONLY);
 		if (process->fd_in < 0)
-			return (perror(wordlst->next->word), -1);
+			return (perror(wordlst->next->word), 0);
 	}
 	return (0);
 }

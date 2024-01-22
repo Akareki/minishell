@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:33:29 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/18 15:02:58 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 12:28:41 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	exec_fork(t_processlst *processlst, char **envarray)
 	processlst->pid = fork();
 	if (processlst->pid == 0)
 	{
+		if (processlst->fd_in < 0 || processlst->fd_out < 0)
+			exit(1);
 		manage_fds(processlst);
 		fork_signal_handler();
 		if (!ft_strchr(processlst->argv[0], '/'))

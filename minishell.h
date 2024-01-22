@@ -6,7 +6,7 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 09:51:40 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 10:07:38 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 15:37:15 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ bool		check_letter_before(const char *command_line,
 bool		check_error(const char *command_line);
 
 size_t		word_len(char *line);
+char		*get_word(char **line);
+int			add_word(char **line, t_wordlst **word_list);
 int			parse_words(char *line, t_wordlst **word_list);
 void		spot_operators(t_wordlst *wordlst);
 void		spot_words(t_shell *shell);
@@ -115,11 +117,10 @@ char		*grab_variable(const char *str);
 size_t		len_of_variables(const char *str);
 size_t		len_of_variables_values(const char *s, t_envlst *envlst);
 size_t		len_without_quotes(const char *str);
-char		*string_expansion(const char *str, t_envlst *envlst,
-				int last_status);
-int			expand_words(t_wordlst *wordlst, t_envlst *envlst, int last_status);
+int			expand_line(t_shell *shell);
 char		*expand_interr(const char *str, int last_status);
 char		*expand_variables(const char *str, t_envlst *envlst);
+int			quote_removal(t_wordlst *wordlst);
 
 int			connect_pipe(t_processlst *process_lst, t_processlst *new_process);
 

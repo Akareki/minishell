@@ -6,7 +6,7 @@
 #    By: aoizel <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/22 15:58:39 by aoizel            #+#    #+#              #
-#    Updated: 2024/01/19 10:09:34 by aoizel           ###   ########.fr        #
+#    Updated: 2024/01/22 15:36:54 by aoizel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,10 @@ CC 				=	cc $(CFLAGS)
 
 SOURCES 		=	minishell.c \
 					env_getset.c env_copy.c env_utils.c env_array_convert.c \
-					check_error.c check_error2.c history.c\
+					check_error.c check_error2.c history.c quote_removal.c\
 					parse_words.c parse_cmd.c parse_utils.c parse_spot.c parse_redir.c \
 					parse_args.c parse_path.c string_expansion.c string_expansion2.c \
-					string_expansion_main.c parse_pipes.c parse_expand.c exec_processlst.c \
+					string_expansion_main.c parse_pipes.c exec_processlst.c \
 					clean_shell.c signal_handlers.c signal_handlers2.c exec_completion.c \
 					exec_builtin.c bi_echo.c bi_cd.c bi_env.c bi_exit.c bi_export.c \
 					bi_pwd.c bi_unset.c

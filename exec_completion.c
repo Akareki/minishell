@@ -6,15 +6,11 @@
 /*   By: aoizel <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:29:14 by aoizel            #+#    #+#             */
-/*   Updated: 2024/01/22 09:20:12 by aoizel           ###   ########.fr       */
+/*   Updated: 2024/01/22 11:14:52 by aoizel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf/libft/libft.h"
 #include "minishell.h"
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 int	job_complete(t_processlst *processlst)
 {
